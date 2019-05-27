@@ -1,53 +1,172 @@
 package tmdb
 
 import (
-	"fmt"
+	"encoding/json"
+	"net/url"
 )
 
 var searchURI = BaseURI + "/search"
 
-func (c *Client) SearchMovie(query string) error {
-	if query == "" {
-		return ErrNoQueryParam
+func (c *Client) SearchMovie(querySlice []string) (*SearchMovieResult, error) {
+	if querySlice == nil {
+		return nil, ErrNoQueryParam
 	}
+
+	query := sumQuery(querySlice)
 
 	searchURI += "/movie"
 
 	var options = map[string]string{
-		"query": query,
+		"query": url.QueryEscape(query),
 	}
 
 	v, err := c.constructURI(searchURI, options)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	res, err := c.request(*v, "GET")
+	s, err := c.request(*v, "GET")
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	fmt.Println(HandleResponse(res))
+	data := SearchMovieResult{}
+	json.Unmarshal([]byte(s), &data)
 
-	return nil
+	return &data, nil
 }
 
-func (c *Client) searchCompany(query string) error {
+func (c *Client) SearchCompany(query string) (*SearchCompanyResult, error) {
 	if query == "" {
-		return ErrNoQueryParam
+		return nil, ErrNoQueryParam
 	}
 
 	searchURI += "/company"
 
-	return nil
-}
-
-func (c *Client) searchPeople(query string) error {
-	if query == "" {
-		return ErrNoQueryParam
+	var options = map[string]string{
+		"query": url.QueryEscape(query),
 	}
 
-	searchURI += "/people"
+	v, err := c.constructURI(searchURI, options)
+	if err != nil {
+		return nil, err
+	}
 
-	return nil
+	s, err := c.request(*v, "GET")
+	if err != nil {
+		return nil, err
+	}
+
+	data := SearchCompanyResult{}
+	json.Unmarshal([]byte(s), &data)
+
+	return &data, nil
+}
+
+func (c *Client) SearchPerson(querySlice []string) (*SearchPersonResult, error) {
+	if querySlice == nil {
+		return nil, ErrNoQueryParam
+	}
+
+	query := sumQuery(querySlice)
+
+	searchURI += "/person"
+
+	var options = map[string]string{
+		"query": url.QueryEscape(query),
+	}
+
+	v, err := c.constructURI(searchURI, options)
+	if err != nil {
+		return nil, err
+	}
+
+	s, err := c.request(*v, "GET")
+	if err != nil {
+		return nil, err
+	}
+
+	data := SearchPersonResult{}
+	json.Unmarshal([]byte(s), &data)
+
+	return &data, nil
+}
+
+func (c *Client) SearchCollection(querySlice []string) (*SearchCollectionResult, error) {
+	if querySlice == nil {
+		return nil, ErrNoQueryParam
+	}
+
+	query := sumQuery(querySlice)
+	searchURI += "/collection"
+	var options = map[string]string{
+		"query": url.QueryEscape(query),
+	}
+
+	v, err := c.constructURI(searchURI, options)
+	if err != nil {
+		return nil, err
+	}
+
+	s, err := c.request(*v, "GET")
+	if err != nil {
+		return nil, err
+	}
+
+	data := SearchCollectionResult{}
+	json.Unmarshal([]byte(s), &data)
+
+	return &data, nil
+}
+
+func (c *Client) SearchKeyword(querySlice []string) (*SearchKeywordResult, error) {
+	if querySlice == nil {
+		return nil, ErrNoQueryParam
+	}
+	query := sumQuery(querySlice)
+	searchURI += "/keyword"
+	var options = map[string]string{
+		"query": url.QueryEscape(query),
+	}
+
+	v, err := c.constructURI(searchURI, options)
+	if err != nil {
+		return nil, err
+	}
+
+	s, err := c.request(*v, "GET")
+	if err != nil {
+		return nil, err
+	}
+
+	data := SearchKeywordResult{}
+	json.Unmarshal([]byte(s), &data)
+
+	return &data, nil
+}
+
+func (c *Client) SearchTv(querySlice []string) (*SearchTvResult, error) {
+	if querySlice == nil {
+		return nil, ErrNoQueryParam
+	}
+	query := sumQuery(querySlice)
+	searchURI += "/tv"
+	var options = map[string]string{
+		"query": url.QueryEscape(query),
+	}
+
+	v, err := c.constructURI(searchURI, options)
+	if err != nil {
+		return nil, err
+	}
+
+	s, err := c.request(*v, "GET")
+	if err != nil {
+		return nil, err
+	}
+
+	data := SearchTvResult{}
+	json.Unmarshal([]byte(s), &data)
+
+	return &data, nil
 }

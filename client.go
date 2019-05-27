@@ -24,10 +24,10 @@ func New(apiKey string) *Client {
 	return &Client{APIKey: apiKey}
 }
 
-func (c *Client) request(uri url.URL, method string) (*http.Response, error) {
+func (c *Client) request(uri url.URL, method string) (string, error) {
 	req, err := http.NewRequest(method, uri.String(), nil)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	if c.Client == nil {
@@ -38,13 +38,18 @@ func (c *Client) request(uri url.URL, method string) (*http.Response, error) {
 
 	res, err := c.Client.Do(req)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	if res.StatusCode != http.StatusOK {
 		defer res.Body.Close()
-		return nil, fmt.Errorf("recieved status code %d", res.StatusCode)
+		return "", fmt.Errorf("recieved status code %d", res.StatusCode)
 	}
-	return res, nil
+	s, err := handleResponse(res)
+	if err != nil {
+		return "", err
+	}
+
+	return s, nil
 }
 
 func (c *Client) constructURI(uri string, options map[string]string) (*url.URL, error) {
@@ -67,11 +72,19 @@ func (c *Client) constructURI(uri string, options map[string]string) (*url.URL, 
 	return u, nil
 }
 
-func HandleResponse(res *http.Response) (string, error) {
+func handleResponse(res *http.Response) (string, error) {
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return "", err
 	}
 	defer res.Body.Close()
 	return string(body), nil
+}
+
+func sumQuery(query []string) string {
+	var out string
+	for _, q := range query {
+		out += q + " "
+	}
+	return out
 }
