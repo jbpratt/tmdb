@@ -14,13 +14,11 @@ func (c *Client) SearchMovie(querySlice []string) (*SearchMovieResult, error) {
 
 	query := sumQuery(querySlice)
 
-	searchURI += "/movie"
-
 	var options = map[string]string{
 		"query": url.QueryEscape(query),
 	}
 
-	v, err := c.constructURI(searchURI, options)
+	v, err := c.constructURI(searchURI+"/movie", options)
 	if err != nil {
 		return nil, err
 	}
@@ -41,13 +39,11 @@ func (c *Client) SearchCompany(query string) (*SearchCompanyResult, error) {
 		return nil, ErrNoQueryParam
 	}
 
-	searchURI += "/company"
-
 	var options = map[string]string{
 		"query": url.QueryEscape(query),
 	}
 
-	v, err := c.constructURI(searchURI, options)
+	v, err := c.constructURI(searchURI+"/company", options)
 	if err != nil {
 		return nil, err
 	}
@@ -70,13 +66,11 @@ func (c *Client) SearchPerson(querySlice []string) (*SearchPersonResult, error) 
 
 	query := sumQuery(querySlice)
 
-	searchURI += "/person"
-
 	var options = map[string]string{
 		"query": url.QueryEscape(query),
 	}
 
-	v, err := c.constructURI(searchURI, options)
+	v, err := c.constructURI(searchURI+"/person", options)
 	if err != nil {
 		return nil, err
 	}
@@ -98,12 +92,12 @@ func (c *Client) SearchCollection(querySlice []string) (*SearchCollectionResult,
 	}
 
 	query := sumQuery(querySlice)
-	searchURI += "/collection"
+
 	var options = map[string]string{
 		"query": url.QueryEscape(query),
 	}
 
-	v, err := c.constructURI(searchURI, options)
+	v, err := c.constructURI(searchURI+"/collection", options)
 	if err != nil {
 		return nil, err
 	}
@@ -124,12 +118,12 @@ func (c *Client) SearchKeyword(querySlice []string) (*SearchKeywordResult, error
 		return nil, ErrNoQueryParam
 	}
 	query := sumQuery(querySlice)
-	searchURI += "/keyword"
+
 	var options = map[string]string{
 		"query": url.QueryEscape(query),
 	}
 
-	v, err := c.constructURI(searchURI, options)
+	v, err := c.constructURI(searchURI+"/keyword", options)
 	if err != nil {
 		return nil, err
 	}
@@ -150,12 +144,12 @@ func (c *Client) SearchTv(querySlice []string) (*SearchTvResult, error) {
 		return nil, ErrNoQueryParam
 	}
 	query := sumQuery(querySlice)
-	searchURI += "/tv"
+
 	var options = map[string]string{
 		"query": url.QueryEscape(query),
 	}
 
-	v, err := c.constructURI(searchURI, options)
+	v, err := c.constructURI(searchURI+"/tv", options)
 	if err != nil {
 		return nil, err
 	}
