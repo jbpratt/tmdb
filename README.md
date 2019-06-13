@@ -34,5 +34,4 @@ func main() {
 - [ ] Discover
   - [ ] Movie
   - [ ] Tv
-- [ ] Find
 - [x] Trending
