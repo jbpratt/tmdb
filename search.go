@@ -2,7 +2,6 @@ package tmdb
 
 import (
 	"encoding/json"
-	"net/url"
 )
 
 var searchURI = BaseURI + "/search"
@@ -12,17 +11,12 @@ func (c *Client) SearchMovie(querySlice []string) (*SearchMovieResult, error) {
 		return nil, ErrNoQueryParam
 	}
 
-	query := sumQuery(querySlice)
-
-	var options = map[string]string{
-		"query": url.QueryEscape(query),
-	}
-
-	v, err := c.constructURI(searchURI+"/movie", options)
+	v, err := c.constructURI(searchURI + "/movie")
 	if err != nil {
 		return nil, err
 	}
 
+	v = setQuery(v, querySlice)
 	s, err := c.request(*v, "GET")
 	if err != nil {
 		return nil, err
@@ -34,20 +28,17 @@ func (c *Client) SearchMovie(querySlice []string) (*SearchMovieResult, error) {
 	return &data, nil
 }
 
-func (c *Client) SearchCompany(query string) (*SearchCompanyResult, error) {
-	if query == "" {
+func (c *Client) SearchCompany(querySlice []string) (*SearchCompanyResult, error) {
+	if querySlice == nil {
 		return nil, ErrNoQueryParam
 	}
 
-	var options = map[string]string{
-		"query": url.QueryEscape(query),
-	}
-
-	v, err := c.constructURI(searchURI+"/company", options)
+	v, err := c.constructURI(searchURI + "/company")
 	if err != nil {
 		return nil, err
 	}
 
+	v = setQuery(v, querySlice)
 	s, err := c.request(*v, "GET")
 	if err != nil {
 		return nil, err
@@ -64,17 +55,12 @@ func (c *Client) SearchPerson(querySlice []string) (*SearchPersonResult, error) 
 		return nil, ErrNoQueryParam
 	}
 
-	query := sumQuery(querySlice)
-
-	var options = map[string]string{
-		"query": url.QueryEscape(query),
-	}
-
-	v, err := c.constructURI(searchURI+"/person", options)
+	v, err := c.constructURI(searchURI + "/person")
 	if err != nil {
 		return nil, err
 	}
 
+	v = setQuery(v, querySlice)
 	s, err := c.request(*v, "GET")
 	if err != nil {
 		return nil, err
@@ -91,17 +77,12 @@ func (c *Client) SearchCollection(querySlice []string) (*SearchCollectionResult,
 		return nil, ErrNoQueryParam
 	}
 
-	query := sumQuery(querySlice)
-
-	var options = map[string]string{
-		"query": url.QueryEscape(query),
-	}
-
-	v, err := c.constructURI(searchURI+"/collection", options)
+	v, err := c.constructURI(searchURI + "/collection")
 	if err != nil {
 		return nil, err
 	}
 
+	v = setQuery(v, querySlice)
 	s, err := c.request(*v, "GET")
 	if err != nil {
 		return nil, err
@@ -117,17 +98,13 @@ func (c *Client) SearchKeyword(querySlice []string) (*SearchKeywordResult, error
 	if querySlice == nil {
 		return nil, ErrNoQueryParam
 	}
-	query := sumQuery(querySlice)
 
-	var options = map[string]string{
-		"query": url.QueryEscape(query),
-	}
-
-	v, err := c.constructURI(searchURI+"/keyword", options)
+	v, err := c.constructURI(searchURI + "/keyword")
 	if err != nil {
 		return nil, err
 	}
 
+	v = setQuery(v, querySlice)
 	s, err := c.request(*v, "GET")
 	if err != nil {
 		return nil, err
@@ -143,17 +120,13 @@ func (c *Client) SearchTv(querySlice []string) (*SearchTvResult, error) {
 	if querySlice == nil {
 		return nil, ErrNoQueryParam
 	}
-	query := sumQuery(querySlice)
 
-	var options = map[string]string{
-		"query": url.QueryEscape(query),
-	}
-
-	v, err := c.constructURI(searchURI+"/tv", options)
+	v, err := c.constructURI(searchURI + "/tv")
 	if err != nil {
 		return nil, err
 	}
 
+	v = setQuery(v, querySlice)
 	s, err := c.request(*v, "GET")
 	if err != nil {
 		return nil, err

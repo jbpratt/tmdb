@@ -48,11 +48,10 @@ func (c *Client) request(uri url.URL, method string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
 	return s, nil
 }
 
-func (c *Client) constructURI(uri string, options map[string]string) (*url.URL, error) {
+func (c *Client) constructURI(uri string) (*url.URL, error) {
 	u, err := url.Parse(uri)
 	if err != nil {
 		return nil, err
@@ -60,15 +59,7 @@ func (c *Client) constructURI(uri string, options map[string]string) (*url.URL, 
 
 	q := u.Query()
 	q.Set("api_key", c.APIKey)
-
-	if options != nil {
-		for key, value := range options {
-			q.Add(key, value)
-		}
-	}
-
 	u.RawQuery = q.Encode()
-
 	return u, nil
 }
 
@@ -87,4 +78,21 @@ func sumQuery(query []string) string {
 		out += q + " "
 	}
 	return out
+}
+
+func setQuery(u *url.URL, querySlice []string) *url.URL {
+	query := sumQuery(querySlice)
+	var options = map[string]string{
+		"query": url.QueryEscape(query),
+	}
+
+	q := u.Query()
+	if options != nil {
+		for key, value := range options {
+			q.Add(key, value)
+		}
+	}
+
+	u.RawQuery = q.Encode()
+	return u
 }

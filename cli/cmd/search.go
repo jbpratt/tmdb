@@ -23,37 +23,37 @@ var searchCmd = &cobra.Command{
 			c := tmdb.New(apikey)
 			switch {
 			case args[0] == "movie":
-				s, err := c.SearchMovie(args[1:])
+				s, err := c.SearchMovie(args)
 				if err != nil {
 					log.Fatal(err)
 				}
 				fmt.Println(s)
 			case args[0] == "company":
-				s, err := c.SearchCompany(args[1])
+				s, err := c.SearchCompany(args)
 				if err != nil {
 					log.Fatal(err)
 				}
 				fmt.Println(s)
 			case args[0] == "tv":
-				s, err := c.SearchTv(args[1:])
+				s, err := c.SearchTv(args)
 				if err != nil {
 					log.Fatal(err)
 				}
 				fmt.Println(s)
 			case args[0] == "person":
-				s, err := c.SearchPerson(args[1:])
+				s, err := c.SearchPerson(args)
 				if err != nil {
 					log.Fatal(err)
 				}
 				fmt.Println(s)
 			case args[0] == "collection":
-				s, err := c.SearchCollection(args[1:])
+				s, err := c.SearchCollection(args)
 				if err != nil {
 					log.Fatal(err)
 				}
 				fmt.Println(s)
 			case args[0] == "keyword":
-				s, err := c.SearchKeyword(args[1:])
+				s, err := c.SearchKeyword(args)
 				if err != nil {
 					log.Fatal(err)
 				}
